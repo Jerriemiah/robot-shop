@@ -21,12 +21,16 @@ spec:
       - name: dispatch
         image: {{ .Values.image.repo }}/rs-dispatch:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+        {{- if .Values.instana.enabled }}
+        # agent networking access
         env:
-          # agent networking access
           - name: INSTANA_AGENT_HOST
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+        {{- end }}
+
         resources:
           limits:
             cpu: 200m

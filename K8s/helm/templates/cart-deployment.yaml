@@ -21,12 +21,16 @@ spec:
       - name: cart
         image: {{ .Values.image.repo }}/rs-cart:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        
+        {{- if .Values.instana.enabled }}
         # agent networking access
         env:
           - name: INSTANA_AGENT_HOST
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+        {{- end }}  
+
         ports:
         - containerPort: 8080
         resources:

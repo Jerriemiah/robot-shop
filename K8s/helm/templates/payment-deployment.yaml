@@ -24,12 +24,16 @@ spec:
       - name: payment
         image: {{ .Values.image.repo }}/rs-payment:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        
+        {{- if .Values.instana.enabled }}
         # agent networking access
         env:
           - name: INSTANA_AGENT_HOST
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+        {{- end }}
+
           {{- if .Values.payment.gateway }}
           - name: PAYMENT_GATEWAY
             value: {{ .Values.payment.gateway }}

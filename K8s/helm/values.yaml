@@ -5,6 +5,10 @@ image:
   version: latest
   pullPolicy: IfNotPresent
 
+# Instana agent integration
+instana:
+  enabled: false
+
 # EUM configuration
 # Provide your key and set the endpoint
 eum:
