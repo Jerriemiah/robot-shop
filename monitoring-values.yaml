@@ -1,0 +1,16 @@
+grafana:
+  adminPassword: "<CHOOSE_A_STRONG_GRAFANA_PASSWORD>"
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+alertmanager:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
