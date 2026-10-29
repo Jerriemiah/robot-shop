@@ -338,6 +338,8 @@ It uses the Prometheus data source and a one-hour default time range. The dashbo
 monitoring/dashboards/robot-shop-service-health.json
 ```
 
+![Robot Shop Service Health dashboard](docs/images/robot-shop-service-health-dashboard.png)
+
 ### Core panels
 
 | Panel | PromQL | Visualization | Unit |
