@@ -9,6 +9,9 @@ spec:
   - name: http
     port: 8080
     targetPort: 8080
+  - name: metrics
+    port: 4040
+    targetPort: 4040
   selector:
     service: web
   {{ if .Values.nodeport }}

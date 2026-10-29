@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: web-nginx-log-exporter
+  labels:
+    service: web
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+    - robot-shop
+  selector:
+    matchLabels:
+      service: web
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 15s
+    
