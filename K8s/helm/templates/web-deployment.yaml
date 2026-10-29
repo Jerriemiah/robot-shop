@@ -14,9 +14,19 @@ spec:
       labels:
         service: web
     spec:
-      {{ if .Values.psp.enabled }}
+      volumes:
+      - name: nginx-logs
+        emptyDir: {}
+      - name: exporter-config
+        configMap:
+          name: web-nginx-log-exporter
+
+      - name: nginx-config
+        configMap:
+          name: web-nginx-config
+      {{- if .Values.psp.enabled }}
       serviceAccountName: robot-shop
-      {{ end }}
+      {{- end }}
       containers:
       - name: web
         image: {{ .Values.image.repo }}/rs-web:{{ .Values.image.version }}
@@ -27,7 +37,7 @@ spec:
           value: {{ .Values.eum.key }}
         - name: INSTANA_EUM_REPORTING_URL
           value: {{ .Values.eum.url }}
-        {{- end}}
+        {{- end }}
         ports:
         - containerPort: 8080
         resources:
@@ -37,6 +47,36 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+          readOnly: true
+      - name: nginx-log-exporter
+        image: quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
+        args:
+        - -config-file
+        - /etc/prometheus-nginxlog-exporter/config.hcl
+        ports:
+        - name: metrics
+          containerPort: 4040
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+        - name: exporter-config
+          mountPath: /etc/prometheus-nginxlog-exporter
+          readOnly: true
+
       restartPolicy: Always
       {{- with .Values.web.affinity }}
       affinity:
