@@ -85,6 +85,51 @@ kubectl get pods -A
 helm list -A
 ```
 
+## Deploy Monitoring Prerequisites
+
+Robot Shop includes a `ServiceMonitor` for exporting Nginx access-log metrics.
+The `ServiceMonitor` custom resource requires the Prometheus Operator CRDs, so
+install the monitoring stack before deploying the application.
+
+### Install Prometheus, Grafana, and the Prometheus Operator
+
+Add the Prometheus Community Helm repository:
+
+```bash
+helm repo add prometheus-community [https://prometheus-community.github.io/helm-charts](https://prometheus-community.github.io/helm-charts)
+helm repo update
+```
+
+Install the monitoring stack into a dedicated `monitoring` namespace:
+
+```bash
+helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false
+```
+
+The `serviceMonitorSelectorNilUsesHelmValues=false` setting allows Prometheus to
+discover `ServiceMonitor` resources created by other Helm releases, including the
+Robot Shop chart.
+
+### Verify the monitoring stack
+
+Wait for the monitoring components to become ready:
+
+```bash
+kubectl get pods -n monitoring
+```
+
+Confirm that the required `ServiceMonitor` CRD is installed:
+
+```bash
+kubectl get crd servicemonitors.monitoring.coreos.com
+```
+
+Do not proceed until this command returns the `servicemonitors.monitoring.coreos.com`
+custom resource definition.
+
 ## Deploy Robot Shop
 
 Create the application namespace:
@@ -108,7 +153,13 @@ kubectl get svc -n robot-shop
 helm list -n robot-shop
 ```
 
-The `web` Service is exposed as a `LoadBalancer`. Retrieve its external endpoint:
+Verify that the Robot Shop `ServiceMonitor` was created successfully:
+
+```bash
+kubectl get servicemonitor -n robot-shop
+```
+
+The web Service is exposed as a LoadBalancer. Retrieve its external endpoint:
 
 ```bash
 kubectl get svc web -n robot-shop
