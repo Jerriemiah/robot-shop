@@ -65,4 +65,9 @@ shipping: {}
 
 user: {}
 
-web: {}
+# web: {}
+web:
+  image:
+    repository: ghcr.io/jerriemiah/robot-shop-web
+    tag: latest
+    pullPolicy: IfNotPresent
