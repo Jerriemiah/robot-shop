@@ -96,7 +96,7 @@ install the monitoring stack before deploying the application.
 Add the Prometheus Community Helm repository:
 
 ```bash
-helm repo add prometheus-community [https://prometheus-community.github.io/helm-charts](https://prometheus-community.github.io/helm-charts)
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
 
