@@ -22,9 +22,9 @@ spec:
           - name: NUM_CLIENTS
             value: "15"
           - name: SILENT
-            value: "1"
+            value: "2"
           - name: ERROR
-            value: "1"
+            value: "0"
         image: robotshop/rs-load:latest
         resources:
           limits:

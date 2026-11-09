@@ -383,7 +383,11 @@ The Grafana dashboard is named:
 Robot Shop Service Health
 ```
 
-It uses the Prometheus data source and a one-hour default time range. The dashboard is exported as JSON to:
+It uses Prometheus as its data source and has a one-hour default time range.
+
+The dashboard monitors the Robot Shop web service's request volume, HTTP 5xx error percentage, successful-request latency, and HTTP response distribution.
+
+The dashboard is exported as JSON to:
 
 ```text
 monitoring/dashboards/robot-shop-service-health.json
@@ -395,22 +399,19 @@ monitoring/dashboards/robot-shop-service-health.json
 
 | Panel | PromQL | Visualization | Unit |
 |---|---|---|---|
-| Requests per second | `sum(rate(nginx_http_response_count_total{service="web"}[5m]))` | Time series | `reqps` |
-| Total requests | `sum(increase(nginx_http_response_count_total{service="web"}[1h]))` | Stat | `short` |
-| Error rate | `sum(rate(nginx_http_response_count_total{service="web",status=~"5.."}[5m])) / sum(rate(nginx_http_response_count_total{service="web"}[5m]))` | Time series | `percentunit` |
-| 5xx errors per second | `sum(rate(nginx_http_response_count_total{service="web",status=~"5.."}[5m]))` | Time series | `reqps` |
-| P95 latency | `histogram_quantile(0.95, sum by (le) (rate(nginx_http_response_time_seconds_hist_bucket{service="web"}[5m])))` | Time series | `seconds` |
-| Average latency | `sum(rate(nginx_http_response_time_seconds_sum{service="web"}[5m])) / sum(rate(nginx_http_response_time_seconds_count{service="web"}[5m]))` | Time series | `seconds` |
+| Requests per second | `sum(rate(nginx_http_response_count_total{job="web"}[5m]))` | Time series | `reqps` |
+| 5xx error percentage | `100 * sum(rate(nginx_http_response_count_total{job="web",status=~"5.."}[5m])) / clamp_min(sum(rate(nginx_http_response_count_total{job="web"}[5m])), 1e-9)` | Time series or Stat | `percent` |
+| P95 successful-request latency | `histogram_quantile(0.95, sum by (le) (rate(nginx_http_response_time_seconds_hist_bucket{job="web",status=~"2.."}[5m])))` | Time series | `seconds` |
+| Requests by HTTP status | `sum by (status) (rate(nginx_http_response_count_total{job="web"}[5m]))` | Time series | `reqps` |
 
-### Supporting panels
+### Metric interpretation
 
-| Panel | PromQL | Visualization | Purpose |
-|---|---|---|---|
-| Requests by status | `sum by (status) (rate(nginx_http_response_count_total{service="web"}[5m]))` | Time series | Shows 2xx, 4xx, and 5xx traffic |
-| Requests by method | `sum by (method) (rate(nginx_http_response_count_total{service="web"}[5m]))` | Time series | Shows GET, POST, and PUT traffic |
-| Robot Shop Ready Pods | `sum(kube_pod_status_ready{namespace="robot-shop",condition="true"})` | Stat | Current ready Pod count |
-| Robot Shop Not Ready Pods | `sum(kube_pod_status_ready{namespace="robot-shop",condition="false"})` | Stat | Current unready Pod count |
-| Pod restarts, 1h | `sum by (pod) (increase(kube_pod_container_status_restarts_total{namespace="robot-shop"}[1h]))` | Time series | Detects crashing workloads |
+- **Requests per second:** Measures the rate of incoming HTTP requests over a five-minute rolling window.
+- **5xx error percentage:** Measures the proportion of requests returning server-side HTTP errors.
+- **P95 latency:** Estimates the response time within which 95% of successful requests complete.
+- **Requests by HTTP status:** Breaks down request traffic by response status, helping distinguish successful requests from client and server errors.
+
+The dashboard currently uses metrics exposed by the Robot Shop web NGINX log exporter. These metrics provide web-layer visibility; they do not represent the health of every individual Robot Shop microservice.
 
 ## Accessing Grafana and Prometheus
 
@@ -437,8 +438,7 @@ http://localhost:3000
 Forward Prometheus in a second terminal:
 
 ```bash
-kubectl port-forward -n monitoring \
-  svc/monitoring-kube-prometheus-prometheus 9090:9090
+kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090:9090
 ```
 
 Open:

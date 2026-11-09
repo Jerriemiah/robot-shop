@@ -2,20 +2,20 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "adz8mcx",
+    "name": "adqmlfv",
     "namespace": "default",
-    "uid": "11283bda-c063-4eda-93c6-8c1aa84759ef",
-    "resourceVersion": "1793299811341019",
-    "generation": 17,
-    "creationTimestamp": "2026-10-28T18:24:10Z",
+    "uid": "84043bff-0f8f-4329-8b0c-cc0ea8a71d6f",
+    "resourceVersion": "1794234418216019",
+    "generation": 9,
+    "creationTimestamp": "2026-11-09T14:02:04Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "3321723070332928"
+      "grafana.app/deprecatedInternalID": "3100816610754560"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:dg2lt7sbphpfkd",
-      "grafana.app/saved-from-ui": "Grafana v13.2.4 (0e79aef9d9)",
-      "grafana.app/updatedBy": "user:dg2lt7sbphpfkd",
-      "grafana.app/updatedTimestamp": "2026-10-29T18:50:11Z"
+      "grafana.app/createdBy": "user:eg3s123stl69se",
+      "grafana.app/saved-from-ui": "Grafana v13.3.0 (6f8ce3c693)",
+      "grafana.app/updatedBy": "user:eg3s123stl69se",
+      "grafana.app/updatedTimestamp": "2026-11-09T14:26:58Z"
     }
   },
   "spec": {
@@ -47,7 +47,7 @@
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Robot Shop Ready Pods",
+          "title": "Request rate (requests per second)",
           "description": "",
           "links": [],
           "data": {
@@ -66,91 +66,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(kube_pod_status_ready{\r\n  namespace=\"robot-shop\",\r\n  condition=\"true\"\r\n})",
-                        "legendFormat": "__auto",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "stat",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds"
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-10": {
-        "kind": "Panel",
-        "spec": {
-          "id": 10,
-          "title": "Average latency",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum(rate(nginx_http_response_time_seconds_sum{service=\"web\"}[5m])) / sum(rate(nginx_http_response_time_seconds_count{service=\"web\"}[5m]))",
+                        "expr": "sum(\r\n  rate(nginx_http_response_count_total{job=\"web\"}[5m])\r\n)",
                         "legendFormat": "__auto",
                         "range": true
                       }
@@ -167,7 +83,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.2.4",
+            "version": "13.3.0",
             "spec": {
               "options": {
                 "legend": {
@@ -184,6 +100,7 @@
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "reqps",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -198,7 +115,7 @@
                     ]
                   },
                   "color": {
-                    "mode": "thresholds",
+                    "mode": "palette-classic",
                     "seriesBy": "last"
                   },
                   "custom": {
@@ -210,8 +127,8 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 39,
-                    "gradientMode": "scheme",
+                    "fillOpacity": 27,
+                    "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
@@ -220,18 +137,14 @@
                     "insertNulls": false,
                     "lineInterpolation": "linear",
                     "lineStyle": {
-                      "dash": [
-                        10,
-                        10
-                      ],
-                      "fill": "dash"
+                      "fill": "solid"
                     },
                     "lineWidth": 1,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
                     },
-                    "showPoints": "never",
+                    "showPoints": "auto",
                     "showValues": false,
                     "spanNulls": false,
                     "stacking": {
@@ -253,7 +166,7 @@
         "kind": "Panel",
         "spec": {
           "id": 2,
-          "title": "Robot Shop Not Ready Pods",
+          "title": "HTTP 5xx error rate (%)",
           "description": "",
           "links": [],
           "data": {
@@ -272,7 +185,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(kube_pod_status_ready{\r\n  namespace=\"robot-shop\",\r\n  condition=\"false\"\r\n})",
+                        "expr": "100 *\r\nsum(\r\n  rate(nginx_http_response_count_total{job=\"web\", status=~\"5..\"}[5m])\r\n)\r\n/\r\nclamp_min(\r\n  sum(\r\n    rate(nginx_http_response_count_total{job=\"web\"}[5m])\r\n  ),\r\n  1e-9\r\n)",
                         "legendFormat": "__auto",
                         "range": true
                       }
@@ -289,7 +202,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.2.4",
+            "version": "13.3.0",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -310,6 +223,7 @@
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "percent",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -337,7 +251,7 @@
         "kind": "Panel",
         "spec": {
           "id": 3,
-          "title": "Robot Shop Pod Restarts (traffic workload health)",
+          "title": "P95 successful-response latency (seconds)",
           "description": "",
           "links": [],
           "data": {
@@ -356,7 +270,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (pod) (\r\n  increase(kube_pod_container_status_restarts_total{\r\n    namespace=\"robot-shop\"\r\n  }[5m])\r\n)",
+                        "expr": "histogram_quantile(\r\n  0.95,\r\n  sum by (le) (\r\n    rate(\r\n      nginx_http_response_time_seconds_hist_bucket{\r\n        job=\"web\",\r\n        status=~\"2..\"\r\n      }[5m]\r\n    )\r\n  )\r\n)",
                         "legendFormat": "__auto",
                         "range": true
                       }
@@ -373,7 +287,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.2.4",
+            "version": "13.3.0",
             "spec": {
               "options": {
                 "legend": {
@@ -390,142 +304,27 @@
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "s",
                   "thresholds": {
-                    "mode": "absolute",
+                    "mode": "percentage",
                     "steps": [
                       {
                         "value": 0,
                         "color": "green"
                       },
                       {
-                        "value": 80,
+                        "value": 40,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 60,
                         "color": "red"
                       }
                     ]
                   },
                   "color": {
                     "mode": "palette-classic",
-                    "seriesBy": "max"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.9,
-                    "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "linear",
-                    "lineStyle": {
-                      "fill": "solid"
-                    },
-                    "lineWidth": 1,
-                    "pointSize": 1,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "always",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-4": {
-        "kind": "Panel",
-        "spec": {
-          "id": 4,
-          "title": "Robot Shop Restarting Containers",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "sum by (pod) (\r\n  kube_pod_container_status_waiting_reason{\r\n    namespace=\"robot-shop\",\r\n    reason=\"CrashLoopBackOff\"\r\n  }\r\n)",
-                        "instant": false,
-                        "interval": "",
-                        "legendFormat": "{{method}} {{status}}",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "palette-classic"
+                    "seriesBy": "last"
                   },
                   "custom": {
                     "axisBorderShow": false,
@@ -536,8 +335,8 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 0,
-                    "gradientMode": "none",
+                    "fillOpacity": 27,
+                    "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
@@ -545,6 +344,9 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
+                    "lineStyle": {
+                      "fill": "solid"
+                    },
                     "lineWidth": 1,
                     "pointSize": 5,
                     "scaleDistribution": {
@@ -568,11 +370,11 @@
           }
         }
       },
-      "panel-5": {
+      "panel-4": {
         "kind": "Panel",
         "spec": {
-          "id": 5,
-          "title": "Robot Shop Pod CPU Usage",
+          "id": 4,
+          "title": "HTTP responses by status code",
           "description": "",
           "links": [],
           "data": {
@@ -591,7 +393,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (pod) (\r\n  rate(container_cpu_usage_seconds_total{\r\n    namespace=\"robot-shop\",\r\n    container!=\"\"\r\n  }[5m])\r\n)",
+                        "expr": "sum by (status) (\r\n  rate(nginx_http_response_count_total{job=\"web\"}[5m])\r\n)",
                         "legendFormat": "__auto",
                         "range": true
                       }
@@ -608,7 +410,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.2.4",
+            "version": "13.3.0",
             "spec": {
               "options": {
                 "legend": {
@@ -619,12 +421,13 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "mode": "single",
+                  "mode": "multi",
                   "sort": "none"
                 }
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "reqps",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -679,459 +482,6 @@
                       "mode": "off"
                     }
                   }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-6": {
-        "kind": "Panel",
-        "spec": {
-          "id": 6,
-          "title": "Requests per second",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum(rate(nginx_http_response_count_total{service=\"web\"}[5m]))",
-                        "legendFormat": "__auto",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "continuous-BlYlRd",
-                    "seriesBy": "last"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 19,
-                    "gradientMode": "scheme",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "smooth",
-                    "lineStyle": {
-                      "fill": "solid"
-                    },
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "never",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-7": {
-        "kind": "Panel",
-        "spec": {
-          "id": 7,
-          "title": "Total requests",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum(increase(nginx_http_response_count_total{service=\"web\"}[1h]))",
-                        "legendFormat": "__auto",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "stat",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "thresholds",
-                    "fixedColor": "#ad46ff"
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-8": {
-        "kind": "Panel",
-        "spec": {
-          "id": 8,
-          "title": "Error rate",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum(rate(nginx_http_response_count_total{service=\"web\",status=~\"5..\"}[5m])) / sum(rate(nginx_http_response_count_total{service=\"web\"}[5m]))",
-                        "legendFormat": "__auto",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 1,
-                        "color": "dark-green"
-                      },
-                      {
-                        "value": 5,
-                        "color": "#EAB839"
-                      },
-                      {
-                        "value": 6,
-                        "color": "dark-red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "continuous-BlYlRd",
-                    "seriesBy": "last"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 19,
-                    "gradientMode": "scheme",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "smooth",
-                    "lineStyle": {
-                      "fill": "solid"
-                    },
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "never",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-9": {
-        "kind": "Panel",
-        "spec": {
-          "id": 9,
-          "title": "P95 latency",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "prometheus"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "histogram_quantile(0.95, sum by (le) (rate(nginx_http_response_time_seconds_hist_bucket{service=\"web\"}[5m])))",
-                        "legendFormat": "__auto",
-                        "range": true
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "timeseries",
-            "version": "13.2.4",
-            "spec": {
-              "options": {
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": true
-                },
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                }
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "s",
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 0.25,
-                        "color": "dark-yellow"
-                      },
-                      {
-                        "value": 1,
-                        "color": "dark-red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "continuous-BlYlRd",
-                    "seriesBy": "last"
-                  },
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
-                    "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 19,
-                    "gradientMode": "scheme",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "insertNulls": false,
-                    "lineInterpolation": "smooth",
-                    "lineStyle": {
-                      "fill": "solid"
-                    },
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "showPoints": "never",
-                    "showValues": false,
-                    "spanNulls": false,
-                    "stacking": {
-                      "group": "A",
-                      "mode": "none"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  },
-                  "fieldMinMax": false
                 },
                 "overrides": []
               }
@@ -1179,60 +529,6 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-5"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-6"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-7"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-8"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-9"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-10"
-              }
-            }
-          },
-          {
-            "kind": "AutoGridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
                 "name": "panel-4"
               }
             }
@@ -1246,9 +542,9 @@
     "tags": [],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-30m",
+      "from": "now-1h",
       "to": "now",
-      "autoRefresh": "5s",
+      "autoRefresh": "",
       "autoRefreshIntervals": [
         "5s",
         "10s",
@@ -1264,7 +560,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "Robot Shop Service Health",
+    "title": "Robot Shop Web Health",
     "variables": [],
     "preferences": {
       "layout": {
